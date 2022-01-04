@@ -21,7 +21,7 @@ if(fs.existsSync(SESSION_FILE_PATH)) {
 const client = new Client({
     puppeteer: {
         executablePath: '/app/.apt/usr/bin/google-chrome',
-    }
+    },
     session: sessionData
 });
 
