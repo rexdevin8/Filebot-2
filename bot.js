@@ -19,6 +19,9 @@ if(fs.existsSync(SESSION_FILE_PATH)) {
 
 // Use the saved values
 const client = new Client({
+    puppeteer: {
+        executablePath: '/app/.apt/usr/bin/google-chrome',
+    }
     session: sessionData
 });
 
