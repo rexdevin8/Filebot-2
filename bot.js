@@ -6,7 +6,7 @@ var rar_process = require('./rar_process')
 const remover = require('./lib/dir-remove')
 var path = require("path");
 var qrcode = require('qrcode-terminal');
-import PQueue from 'p-queue';
+const PQueue require('p-queue');
 const port = process.env.PORT || 6000;
 
 const app = express();
