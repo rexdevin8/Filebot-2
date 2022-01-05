@@ -6,9 +6,16 @@ var rar_process = require('./rar_process')
 const remover = require('./lib/dir-remove')
 var path = require("path");
 var qrcode = require('qrcode-terminal');
+import PQueue from 'p-queue';
 const port = process.env.PORT || 6000;
 
 const app = express();
+
+const singleFileQ = new PQueue({
+    concurrency: 1,
+    intervalCap: 1,
+    carryoverConcurrencyCount: true
+  })
 
 const SESSION_FILE_PATH = './session.json';
 
@@ -55,11 +62,10 @@ client.on('message', async msg => {
       console.log(lists)
 
       await msg.reply("Please Wait " + list.length + " Files are Uploading 😴")
-      for(var i = 0; i < list.length ; i++){
-        console.log(list[i])
-        const media = MessageMedia.fromFilePath(list[i]);
-        await client.sendMessage(msg.from,media)
-    }
+      await Promise.all(files.map(file => singleFileQ.add(()=>client.sendMessage(msg.from,MessageMedia.fromFilePath(file)))));
+
+    //now you can wait until all the files have been sent
+    await singleFileQ.onEmpty()
     await msg.reply("All files have been uploaded by ~Luna 🌸")
     remover(lists[1]) 
     }
