@@ -58,7 +58,7 @@ client.on('message', async msg => {
       for(var i = 0; i < list.length ; i++){
         console.log(list[i])
         const media = MessageMedia.fromFilePath(list[i]);
-        await client.sendMessage(msg.from,media)
+        client.sendMessage(msg.from,media)
     }
     await msg.reply("All files have been uploaded by ~Luna 🌸")
     remover(lists[1]) 
